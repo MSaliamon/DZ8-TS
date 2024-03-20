@@ -38,14 +38,14 @@ interface Magazine {
     publisher: string;
 }
 
-class Shelf {
-    private items: (Book | Magazine)[] = [];
+class Shelf<T extends Book | Magazine> {
+    private items: T[] = [];
 
-    add(item: Book | Magazine): void {
+    add(item: T): void {
         this.items.push(item);
     }
 
-    getFirst(): Book | Magazine | undefined {
+    getFirst(): T | undefined {
         return this.items[0];
     }
 
@@ -55,7 +55,7 @@ class Shelf {
         });
     }
 
-    find(searchKey: number | string): Book | Magazine | undefined {
+    find(searchKey: number | string): T | undefined {
         if (typeof searchKey === 'number') {
             return this.items.find(item => (item as Book).id === searchKey);
         } else if (typeof searchKey === 'string') {
@@ -66,7 +66,7 @@ class Shelf {
     }
 }
 
-const bookShelf = new Shelf();
+const bookShelf = new Shelf<Book>();
 inventory.forEach(book => bookShelf.add(book));
 
 console.log(bookShelf.getFirst()?.title);
@@ -77,7 +77,7 @@ const magazines: Magazine[] = [
     { title: 'Five Points', publisher: 'GSU' }
 ];
 
-const magazineShelf = new Shelf();
+const magazineShelf = new Shelf<Magazine>();
 magazines.forEach(magazine => magazineShelf.add(magazine));
 
 console.log(magazineShelf.getFirst()?.title);
